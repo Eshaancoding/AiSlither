@@ -20,7 +20,6 @@ The libraries I used is in the requirements.txt. You can simply type `pip3 insta
 
 ## TODO List
 
-- Create WebsiteInteraction class
 - Implement DQN
 - Create the main!
 - Create a makefile for running the algorithm 
