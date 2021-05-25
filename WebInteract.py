@@ -7,10 +7,10 @@ import time
 import numpy as np
 from math import ceil
 import ctypes
+import torch
 
 
 class WebInteract:
-
     width = 600
     height = 600 
     left = 0    
@@ -81,7 +81,7 @@ class WebInteract:
         if show: 
             im.show()
 
-        return np.array(im)
+        return torch.from_numpy(np.array(im))
 
     def __del__ (self):        
         # free our objects 

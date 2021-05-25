@@ -48,6 +48,11 @@ class Agent:
     output_size = 0
     loss_history = []
     frames = 0
+    should_open_model = False
+
+    def __init__ (self):
+        should_open_model = True
+        return None
 
     def __init__(self, output_size, lr, mem_capacity, frameReachProb, targetFreqUpdate, batches):
         # init var
@@ -78,23 +83,42 @@ class Agent:
         # set target_net 
         self.target_net = self.net
 
-    def get_action (self, input): 
+    def open_model (self, path):
+        self.should_open_model = False
+        # load all the variables
+        raise NotImplementedError
+
+    def save_model (self, path):
+        # save all the variables onto path
+        raise NotImplementedError
+
+    def get_action (self, input, testing=False): 
+        if self.should_open_model:
+            raise ValueError("Parameters must be filled with __init__(self, output_size, lr, mem_capacity, frameReachProb, targetFreqUpdate, batches) unless you open a pre-existing model with model_open(self, path)")
+        
         self.net.eval()
         input = put_to_gpu_or_cpu(input)
-        self.frames+=1
-        prob = 0.0
-        if self.frames < self.frameReachProb: 
-            prob = (-0.9 / self.frameReachProb) * self.frames + 1
+        if not testing:
+            # if training, then it will explore actions
+            self.frames+=1
+            prob = 0.0
+            if self.frames < self.frameReachProb: 
+                prob = (-0.9 / self.frameReachProb) * self.frames + 1
+            else:
+                prob = 0.1
+            is_random = (random.randint(0,100) < (prob * 100))
+            if is_random:
+                return torch.rand(self.output_size)
+            else:
+                return self.net(input)
         else:
-            prob = 0.1
-        is_random = (random.randint(0,100) < (prob * 100))
-        if is_random:
-            return torch.rand(self.output_size)
-        else:
+            # if training, then it will not explore actions
             return self.net(input)
 
     def train (self):
-
+        if self.should_open_model:
+            raise ValueError("Parameters must be filled with __init__(self, output_size, lr, mem_capacity, frameReachProb, targetFreqUpdate, batches) unless you open a pre-existing model with model_open(self, path)")
+        
         self.net.train()
 
         for i in range(self.batches):
