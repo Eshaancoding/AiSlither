@@ -18,11 +18,14 @@ The libraries I used is in the requirements.txt. You can simply type `pip3 insta
 - Will start a new episode automatically.
 
 
+## Concerns
+- Will DQN be able to train on multiple actions AT the same time. 
+[x,x,x_target,x,x,x,x,x,x,y_target,y] 
+
 ## TODO List
 
 - Implement DQN
 - Create the main!
 - Create a makefile for running the algorithm 
-
 
 ## How to run

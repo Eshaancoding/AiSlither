@@ -11,7 +11,6 @@ import ctypes
 
 class WebInteract:
 
-    # determine the size of all monitors in pixels 
     width = 600
     height = 600 
     left = 0    
@@ -82,8 +81,7 @@ class WebInteract:
         if show: 
             im.show()
 
-        return im
-        #return np.array(im)
+        return np.array(im)
 
     def __del__ (self):        
         # free our objects 
